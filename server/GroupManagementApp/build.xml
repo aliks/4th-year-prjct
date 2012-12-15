@@ -1,0 +1,59 @@
+<project name="Java Build" default="BuildAll">
+
+	<property name="glassfish_libs" value="C:\glassfish3\glassfish\modules" />
+	<property name="bin" value="./bin" />
+	<property name="lib" value="./lib" />
+	<property name="src" value="./src" />
+	<property name="dist" value="./dist" />
+	<property name="jarfile" value="${dist}/ejb.jar" />
+	
+	<path id="my.classpath">
+		<pathelement path="${java.class.path}" />
+		<pathelement location="${bin}" />
+		<fileset dir="${lib}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${glassfish_libs}">
+			<include name="**/javax*.jar" />
+			<!-- <include name="jsf-api.jar" /> -->
+		</fileset>
+	</path>
+	
+	<target name="BuildAll" depends="clean, prep, compile, jar" description="Complete rebuild.">
+		<echo message="Build complete." />
+	</target>
+	
+	<target name="clean">
+		<delete dir="${bin}" />
+		<delete dir="${dist}" />
+		<delete>
+			<fileset dir=".">
+				<include name="TEST*.xml" />
+			</fileset>
+		</delete>
+	</target>
+	
+	<target name="prep">
+		<mkdir dir="${bin}" />
+		<mkdir dir="${dist}" />
+	</target>
+
+	<target name="compile" depends="prep" description="Compile all Java classes">
+		<javac debug="true" destdir="${bin}" encoding="ISO-8859-1" srcdir="${src}">
+			<classpath refid="my.classpath" />
+		</javac>
+		<echo message="Compiled." />
+	</target>
+	
+	<target name="jar" depends="compile" description="Build EJB Jar files.">
+		<delete file="${jarfile}" />
+		<jar basedir="${bin}" destfile="${jarfile}">
+			<metainf dir="${src}/META-INF">
+				<include name="persistence.xml" />
+			</metainf>
+		</jar>
+	
+		<copy file="${jarfile}" todir="C:\glassfish3\glassfish\domains\domain1\autodeploy" />
+
+	</target>
+</project>
