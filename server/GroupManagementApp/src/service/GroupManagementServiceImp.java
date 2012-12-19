@@ -4,13 +4,15 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.jws.WebService;
 
 import dataaccess.GroupDataAccessImp;
 import domain.Group;
 import domain.User;
 
 @Stateless
-public class GroupManagementServiceImp implements GroupManagementService {
+public class GroupManagementServiceImp implements GroupManagementServiceRemote,
+													GroupManagementServiceLocal {
 
 	@EJB
 	private GroupDataAccessImp dao;

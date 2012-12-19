@@ -6,6 +6,7 @@
 	<property name="src" value="./src" />
 	<property name="dist" value="./dist" />
 	<property name="jarfile" value="${dist}/ejb.jar" />
+	<property name="warfile" value="${dist}/webapp.war"/>
 	
 	<path id="my.classpath">
 		<pathelement path="${java.class.path}" />
@@ -19,8 +20,15 @@
 		</fileset>
 	</path>
 	
-	<target name="BuildAll" depends="clean, prep, compile, jar" description="Complete rebuild.">
+	<target name="BuildAll" depends="clean, prep, compile, jar, war" description="Complete rebuild.">
 		<echo message="Build complete." />
+	</target>
+	
+	<target name="classpath">
+		<property name="current.classpath" refid="my.classpath" />
+		<echo level="info">
+      Classpath is : ${current.classpath}
+        </echo>
 	</target>
 	
 	<target name="clean">
@@ -52,8 +60,20 @@
 				<include name="persistence.xml" />
 			</metainf>
 		</jar>
+	</target>
 	
-		<copy file="${jarfile}" todir="C:\glassfish3\glassfish\domains\domain1\autodeploy" />
-
+	<target name="war" description="Build WAR file." depends="compile"> 
+		<copy todir="${bin}"> 
+			<fileset dir="${src}"> 
+	    		<include name="**/persistence.xml"/> 
+			</fileset> 
+		</copy> 
+		<delete file="${warfile}"/> 
+		<war destfile="${warfile}" webxml="./web/WEB-INF/web.xml"> 
+		    <classes dir="${bin}" /> 
+		    <lib dir="${lib}"/> 
+		    <!-- <fileset dir="${html}"/> -->
+		</war> 
+		<copy file="${warfile}" todir="C:\glassfish3\glassfish\domains\domain1\autodeploy" />
 	</target>
 </project>
