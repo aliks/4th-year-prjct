@@ -17,7 +17,7 @@ import com.android.alex.services.domain.User;
 
 public class SoapService {
 	private static final String NAMESPACE = "http://service/";
-	private static final String URL = "http://10.0.2.2:8080/webapp/GroupManagementWebServiceService?WSDL";
+	private static final String URL = "http://10.0.2.2:8080/GroupsManagement/GroupManagementWebServiceService?wsdl";
 
 	private SoapObject request;
 	private SoapSerializationEnvelope envelope;
@@ -28,16 +28,12 @@ public class SoapService {
 	public void createGroupServ(String groupName) 
 	{
 		request = new SoapObject(NAMESPACE, "createGroup");
-
-		Group gr = new Group();
-		gr.setGroupName(groupName);
-
-		request.addProperty("new-group-object", gr);
+		request.addProperty("groupname", groupName);
 
 		envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
 		envelope.dotNet = false;
 		envelope.setOutputSoapObject(request);
-		envelope.addMapping(NAMESPACE, "Group", new Group().getClass());
+		//envelope.addMapping(NAMESPACE, "Group", new Group().getClass());
 
 		androidHttpTransport = new HttpTransportSE(URL);
 		androidHttpTransport.debug = true;

@@ -23,12 +23,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.widget.TextView;
 
-public class MainActivity extends Activity {
-	
-	private static final String NAMESPACE = "http://service/";
-    private static final String URL ="http://10.0.2.2:8080/webapp/GroupManagementWebServiceService?WSDL"; 
-    private static final String SOAP_ACTION = "http://service/groupManagementWebService/createGroup";
-    private static final String METHOD_NAME = "createGroup";
+public class MainActivity extends Activity 
+{
     private TextView result;
 
 	@Override
@@ -37,10 +33,10 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
-		new SoapService().createGroupServ("home");
+		//new SoapService().createGroupServ("home");
 		//new SoapService().regUser("NewUser", 20, 20.0, 20.0);
 		//new SoapService().getAllGroups();
-		//new SoapService().putUserToGroup("NewUser", 20, "xxxx");
+		new SoapService().putUserToGroup("NewUser", 20, "home");
 		//new SoapService().removeUserFromGroup("NewUser", 20, "home");
 		//new SoapService().deleteGroup("home");
 		//new SoapService().findGroup("geeks");
