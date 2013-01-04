@@ -1,5 +1,6 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -24,13 +25,13 @@ public class GroupManagementServiceImp implements GroupManagementServiceRemote,
 	}
 
 	@Override
-	public List<User> getAllUsers(String groupName) 
+	public List<String> getAllUsers(String groupName) 
 	{
 		return dao.viewUsersByGroup(groupName);
 	}
 
 	@Override
-	public List<User> searchUser(String name) 
+	public List<String> searchUser(String name) 
 	{
 		return dao.findByUserName(name);
 	}
@@ -41,44 +42,47 @@ public class GroupManagementServiceImp implements GroupManagementServiceRemote,
 		// find user 
 		User u = findUser(name, age);
 		// update location
-		u.setLatitude(latit);
-		u.setLongitude(longt);
-		//update user
-		dao.updateUser(u);
-	}
-	
-	private User findUser(String name, int age) 
-	{
-		List<User> list = dao.findByUserName(name);
-		for(User usr : list) {
-			if(usr.getUserAge() == age)
-				return usr;
+		if(u != null) {
+			u.setLatitude(latit);
+			u.setLongitude(longt);
+			//update user
+			dao.updateUser(u);
 		}
-		return null;
 	}
 
 	@Override
-	public void createGroup(Group newGroup) 
+	public void createGroup(String newGroupString) 
 	{
+		Group newGroup = new Group(newGroupString);
 		dao.insertGroup(newGroup);
 	}
 
 	@Override
-	public List<Group> viewAllGroups() 
+	public List<String> viewAllGroups() 
 	{
 		return dao.getAllGroups();
 	}
 
 	@Override
-	public Group searchGroup(String groupName) 
+	public List<String> searchGroup(String groupName) 
 	{
-		return dao.getGroupByName(groupName);
+		Group gr = dao.getGroupByName(groupName);
+		List<String> result = new ArrayList<String>();
+		if(gr != null) {
+			result.add(gr.getGroupName());
+			for(User u : gr.getUsers())
+				result.add(u.getUserName());
+			return result;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
-	public void subscribeToGroup(User user, String groupName) 
+	public void subscribeToGroup(String name, int age, String groupName) 
 	{
-		Group group = searchGroup(groupName);
+		User user = findUser(name, age);
+		Group group = findGroup(groupName);
 		//group.getUsers().size();
 		group.getUsers().add(user);
 		updateGroup(group);
@@ -90,21 +94,59 @@ public class GroupManagementServiceImp implements GroupManagementServiceRemote,
 	}
 
 	@Override
-	public void removeGroup(Group oldGroup) 
+	public void removeGroup(String groupName) 
 	{
+		Group oldGroup = findGroup(groupName);
 		dao.deleteGroup(oldGroup);
 	}
 
 	@Override
-	public void unsubscribeUserFromGroup(User user, String groupName) 
+	public void unsubscribeUserFromGroup(String name, int age, String groupName) 
 	{
-		Group group = searchGroup(groupName);
+		User user = findUser(name, age);
+		Group group = findGroup(groupName);
 		// find user in a group
 		int i = getUserInList(group, user);
 		// delete user in a group
 		group.getUsers().remove(i); 
 		// update new list
 		updateGroup(group);
+	}
+	
+	@Override
+	public List<String> getUserLocation(String Username, String groupName)
+	{
+		List<String> result = new ArrayList<String>();
+		String sb = null;
+		List<User> listOfUser = findGroup(groupName).getUsers();
+		if(listOfUser != null) {
+			for(User u : listOfUser) {
+				if(u.getUserName().equalsIgnoreCase(Username)) {
+					sb = "name: " + Username + "; location: " + u.getLatitude() + "," + u.getLongitude();
+					result.add(sb);
+				}	
+			}
+			return result;	
+		} else 
+			return null;
+	}
+	
+	@Override
+	public List<String> getUserage(String Username, String groupName)
+	{
+		List<String> result = new ArrayList<String>();
+		String sb = null;
+		List<User> listOfUser = findGroup(groupName).getUsers();
+		if(listOfUser != null) {
+			for(User u : listOfUser) {
+				if(u.getUserName().equalsIgnoreCase(Username)) {
+					sb = "name: " + Username + "; age: " + u.getUserAge();
+					result.add(sb);
+				}	
+			}
+			return result;	
+		} else 
+			return null;
 	}
 	
 	private int getUserInList(Group grp, User u) 
@@ -119,8 +161,20 @@ public class GroupManagementServiceImp implements GroupManagementServiceRemote,
 		return index;
 	}
 	
+	private Group findGroup(String groupName)
+	{
+		return dao.getGroupByName(groupName);
+	}
 	
-	
+	private User findUser(String name, int age) 
+	{
+		List<User> list = dao.findByUserName2(name);
+		for(User usr : list) {
+			if(usr.getUserAge() == age)
+				return usr;
+		}
+		return null;
+	}
 	
 
 }

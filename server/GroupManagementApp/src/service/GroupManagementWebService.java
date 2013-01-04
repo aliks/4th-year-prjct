@@ -3,6 +3,8 @@ package service;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import domain.Group;
@@ -19,12 +21,12 @@ public class GroupManagementWebService {
 		groupManagementService.registerUser(newUser);
 	}
 
-	public List<User> getAllUsers(String groupName) 
+	public List<String> getAllUsers(String groupName) 
 	{
 		return groupManagementService.getAllUsers(groupName);
 	}
 
-	public List<User> searchUser(String name) 
+	public List<String> searchUser(String name) 
 	{
 		return groupManagementService.searchUser(name);
 	}
@@ -34,39 +36,50 @@ public class GroupManagementWebService {
 		groupManagementService.updateLocation(latit, longt, name, age);
 	}
 
-	public void createGroup(Group newGroup) 
+	public void createGroup(@WebParam(name = "groupname")String newGroup) 
 	{
 		groupManagementService.createGroup(newGroup);
 	}
 
-	public void removeGroup(Group oldGroup) 
+	public void removeGroup(String oldGroup) 
 	{
 		groupManagementService.removeGroup(oldGroup);
 	}
 
-	public List<Group> viewAllGroups() 
+	public List<String> viewAllGroups() 
 	{
 		return groupManagementService.viewAllGroups();
 	}
 
-	public Group searchGroup(String groupName) 
+	public List<String> searchGroup(String groupName) 
 	{
 		return groupManagementService.searchGroup(groupName);
 	}
 
-	public void subscribeToGroup(User user, String groupName) 
+	public void subscribeToGroup(String name, int age, String groupName)
 	{
-		groupManagementService.subscribeToGroup(user, groupName);
+		groupManagementService.subscribeToGroup(name, age, groupName);
 	}
 
-	public void unsubscribeUserFromGroup(User user, String groupName) 
+	public void unsubscribeUserFromGroup(String name, int age, String groupName)
 	{
-		groupManagementService.unsubscribeUserFromGroup(user, groupName);
+		groupManagementService.unsubscribeUserFromGroup(name, age, groupName);
 	}
-
+	
+	public List<String> getUserLocation(String Username, String groupName)
+	{
+		return groupManagementService.getUserLocation(Username, groupName);
+	}
+	
+	public List<String> getUserage(String Username, String groupName)
+	{
+		return groupManagementService.getUserage(Username, groupName);
+	}
+	
+	@WebMethod(exclude=true)
 	public void updateGroup(Group group) 
 	{
-		groupManagementService.updateGroup(group);
+		
 	}
 
 }

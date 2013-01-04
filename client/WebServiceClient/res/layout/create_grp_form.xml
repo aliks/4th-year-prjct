@@ -1,0 +1,31 @@
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".CreateGrpActivity" >
+
+    <TextView
+        android:id="@+id/grp_label_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Group name:"
+        android:textSize="17sp" />
+
+    <EditText
+        android:id="@+id/grp_name_ed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/grp_label_textView"
+        android:ems="10" >
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/submit_b"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Create Group" />
+    
+</RelativeLayout>

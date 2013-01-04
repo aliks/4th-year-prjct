@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/SearchFormViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/search_form_view_title"
+        android:textSize="5pt" >
+    </TextView>
+
+    <EditText
+        android:id="@+id/srch_grp_name_ed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/SearchFormViewTitle"
+        android:ems="10"
+        android:hint="search group name" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/srch_grp_by_user_name_ed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/srch_grp_name_ed"
+        android:ems="10"
+        android:hint="list all users of group" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/srch_user_name_ed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/srch_grp_by_user_name_ed"
+        android:ems="10"
+        android:hint="search user" >
+    </EditText>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/srch_user_name_ed">
+    </ListView>
+
+    <Button
+        android:id="@+id/submit_search_form_b"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Search" />
+
+</RelativeLayout>

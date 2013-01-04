@@ -12,25 +12,27 @@ public interface GroupManagementServiceLocal {
 	
 	public void registerUser(User newUser);
 	
-	public List<User> getAllUsers(String groupName);
+	public List<String> getAllUsers(String groupName);
 	
-	public List<User> searchUser(String name);
+	public List<String> searchUser(String name);
 	
 	public void updateLocation(Double latit, Double longt, String name, int age);
 	
-	public void createGroup(Group newGroup);
+	public void createGroup(String newGroup);
 	
-	public void removeGroup(Group oldGroup);
+	public void removeGroup(String groupName);
 	
-	public List<Group> viewAllGroups();
+	public List<String> viewAllGroups();
 	
-	public Group searchGroup(String groupName);
+	public List<String> searchGroup(String groupName);
 	
-	public void subscribeToGroup(User user, String groupName);
+	public void subscribeToGroup(String name, int age, String groupName);
 	
-	public void unsubscribeUserFromGroup(User user, String groupName);
-	
+	public void unsubscribeUserFromGroup(String name, int age, String groupName);
 	
 	public void updateGroup(Group group);
 
+	public List<String> getUserLocation(String Username, String groupName);
+	
+	public List<String> getUserage(String Username, String groupName);
 }

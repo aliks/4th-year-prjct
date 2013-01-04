@@ -38,6 +38,7 @@ public class Group implements Serializable
 		super();
 		this.groupName = groupName;
 		this.users = new ArrayList<User>();
+		//this.users.add(u);
 	}
 
 	public long getGroupId() {

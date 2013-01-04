@@ -1,5 +1,6 @@
 package dataaccess;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -21,16 +22,27 @@ public class GroupDataAccessImp
 		em.persist(newUser);
 	}
 	// TESTED
-	public List<User> viewUsersByGroup(String groupName) 
+	public List<String> viewUsersByGroup(String groupName) 
 	{
 		Query q = em.createQuery("SELECT grp.users FROM Group grp " +
 				"WHERE grp.groupName = :grName");
 		q.setParameter("grName", groupName);
-		List<User> usrList = q.getResultList();
-		return usrList;
+		List<User> list = q.getResultList();		
+		return fetchUserNames(list);
 	}
 	// TESTED
-	public List<User> findByUserName(String name) 
+	// return list of strings
+	public List<String> findByUserName(String name) 
+	{
+		Query q = em.createQuery("SELECT usr FROM User usr " +
+				"WHERE usr.userName LIKE :name");
+		q.setParameter("name", name);
+		List<User> result = q.getResultList();
+		return fetchUserNames(result);
+	}
+	// TESTED 
+	// return list of objects
+	public List<User> findByUserName2(String name) 
 	{
 		Query q = em.createQuery("SELECT usr FROM User usr " +
 				"WHERE usr.userName LIKE :name");
@@ -55,10 +67,10 @@ public class GroupDataAccessImp
 		em.remove(em.merge(oldGroup));
 	}
 	// TESTED
-	public List<Group> getAllGroups() 
+	public List<String> getAllGroups() 
 	{
-		Query q = em.createQuery("SELECT g FROM Group g");
-		List<Group> result = q.getResultList();
+		Query q = em.createQuery("SELECT g.groupName FROM Group g");
+		List<String> result = q.getResultList();
 		return result;
 	}
 	// TESTED
@@ -66,14 +78,26 @@ public class GroupDataAccessImp
 		Query q = em.createQuery("SELECT g FROM Group g " +
 				"WHERE g.groupName = :name");
 		q.setParameter("name", groupName);
-		Group result = (Group) q.getResultList().get(0);
-		//result.getUsers().size();
-		return result;
+		List<Group> result = q.getResultList();
+		if(result.isEmpty()) 
+			return null;
+		else return result.get(0);
 	}
 	// TESTED
 	public void updateGroup(Group group) 
 	{
 		em.merge(group);
+	}
+	
+	private List<String> fetchUserNames(List<User> source)
+	{
+		List<String> usrList = new ArrayList<String>();
+		if(source != null) {
+			for(User u:	source)
+				usrList .add(u.getUserName());
+		} else 
+			return null;
+		return usrList;
 	}
 
 }

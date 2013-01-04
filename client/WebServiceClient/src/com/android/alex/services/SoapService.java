@@ -15,7 +15,8 @@ import android.util.Log;
 import com.android.alex.services.domain.Group;
 import com.android.alex.services.domain.User;
 
-public class SoapService {
+public class SoapService 
+{
 	private static final String NAMESPACE = "http://service/";
 	private static final String URL = "http://10.0.2.2:8080/GroupsManagement/GroupManagementWebServiceService?wsdl";
 
@@ -85,12 +86,13 @@ public class SoapService {
 		} catch (XmlPullParserException e) {
 			e.printStackTrace();
 		}
-		SoapObject results = null;
+		Object results = null;
 		try {
-			results = (SoapObject) envelope.getResponse();
+			results = (Object) envelope.getResponse();
 		} catch (SoapFault e) {
 			e.printStackTrace();
 		}
+		Log.v("list", results.toString());
 		return results.toString();
 	}
 
@@ -260,13 +262,16 @@ public class SoapService {
 		} catch (XmlPullParserException e) {
 			e.printStackTrace();
 		}
-		SoapObject results = null;
+		Object results = null;
 		try {
-			results = (SoapObject) envelope.getResponse();
+			results = (Object) envelope.getResponse();
 		} catch (SoapFault e) {
 			e.printStackTrace();
 		}
-		return results.toString();
+		if(results == null) 
+			return null;
+		else
+			return results.toString();
 	}
 
 	public String listAllUsers(String group)
@@ -293,15 +298,19 @@ public class SoapService {
 		} catch (XmlPullParserException e) {
 			e.printStackTrace();
 		}
-		SoapObject results = null;
+		Object results = null;
 		try {
-			results = (SoapObject) envelope.getResponse();
+			results = (Object) envelope.getResponse();
 		} catch (SoapFault e) {
 			e.printStackTrace();
 		}
-		return results.toString();
+		if(results == null) 
+			return null;
+		else
+			return results.toString();
 	}
 
+	// NOT SURE if should be used
 	public String finduser(String name)
 	{
 		request = new SoapObject(NAMESPACE, "searchUser");
@@ -326,15 +335,17 @@ public class SoapService {
 		} catch (XmlPullParserException e) {
 			e.printStackTrace();
 		}
-		SoapObject results = null;
+		Object results = null;
 		try {
-			results = (SoapObject) envelope.getResponse();
+			results = (Object) envelope.getResponse();
 		} catch (SoapFault e) {
 			e.printStackTrace();
 		}
-		return results.toString();
+		if(results == null) 
+			return null;
+		else
+			return results.toString();
 	}
-
 	
 	public void update(double l, double lo, String name, int i) 
 	{
@@ -376,4 +387,7 @@ public class SoapService {
 		
 	}
 
+	//add getUser location
+	
+	//add getUser age
 }

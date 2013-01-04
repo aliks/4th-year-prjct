@@ -4,5 +4,6 @@
     <string name="app_name">GroupManagement</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    <string name="search_form_view_title">Enter text according which you want to make search</string>
 
 </resources>

@@ -22,6 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.android.alex.groupmanagement.CreateGrpActivity" />
+        <activity android:name="com.android.alex.groupmanagement.SearchActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
