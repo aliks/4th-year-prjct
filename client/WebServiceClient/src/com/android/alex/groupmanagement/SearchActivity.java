@@ -51,7 +51,6 @@ public class SearchActivity extends ListActivity
 			public void onClick(View v) {
 				if(!groupNameField.getText().toString().equals("")) {
 					resultString= ss.findGroup(groupNameField.getText().toString());		// find group
-					Log.v(">>>>>>>", resultString);
 
 				} else if(!userNameField.getText().toString().equals("")) {
 					resultString = ss.finduser(userNameField.getText().toString());			// find users by name
@@ -85,7 +84,8 @@ public class SearchActivity extends ListActivity
 	}
 	
 	private void parse(String str) {
-		searchResult = resultString.replace("[", "").replace("]", "").split("\\,\\s");
+		if(str != null)
+			searchResult = str.replace("[", "").replace("]", "").split("\\,\\s");
 	}
 }
 

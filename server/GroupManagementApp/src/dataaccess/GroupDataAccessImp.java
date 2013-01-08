@@ -73,6 +73,13 @@ public class GroupDataAccessImp
 		List<String> result = q.getResultList();
 		return result;
 	}
+	//
+	public List<Group> getAllGroupsObj() 
+	{
+		Query q = em.createQuery("SELECT g FROM Group g");
+		List<Group> result = q.getResultList();
+		return result;
+	}
 	// TESTED
 	public Group getGroupByName(String groupName) {
 		Query q = em.createQuery("SELECT g FROM Group g " +
@@ -88,6 +95,7 @@ public class GroupDataAccessImp
 	{
 		em.merge(group);
 	}
+	//
 	
 	private List<String> fetchUserNames(List<User> source)
 	{

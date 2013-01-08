@@ -149,6 +149,39 @@ public class GroupManagementServiceImp implements GroupManagementServiceRemote,
 			return null;
 	}
 	
+	public List<String> findUsersGrp(String user, int age)
+	{
+		List<Group> listOfGrpObj = getAllGroupsObj();
+		List<String> resultList = new ArrayList<String>();
+		if(listOfGrpObj != null)
+		{
+			for(Group group : listOfGrpObj) {
+				for(User users : group.getUsers()) {
+					if(isInGroup(user, age, group.getGroupName()))
+						resultList.add(group.getGroupName());
+				}
+			}
+			return resultList;
+		}
+		return null;
+	}
+	
+	private boolean isInGroup(String name, int age, String groupName) 
+	{
+		Group foundGroup = findGroup(groupName);
+		for(User u : foundGroup.getUsers())
+		{
+			if(u.getUserAge() == age && u.getUserName().equalsIgnoreCase(name))
+				return true;
+		}
+		return false;
+	}
+	
+	private List<Group> getAllGroupsObj()
+	{
+		return dao.getAllGroupsObj();
+	}
+	
 	private int getUserInList(Group grp, User u) 
 	{
 		int index = 0;

@@ -76,6 +76,11 @@ public class GroupManagementWebService {
 		return groupManagementService.getUserage(Username, groupName);
 	}
 	
+	public List<String> findUsersGrp(String user, int age) 
+	{
+		return groupManagementService.findUsersGrp(user, age);
+	}
+	
 	@WebMethod(exclude=true)
 	public void updateGroup(Group group) 
 	{

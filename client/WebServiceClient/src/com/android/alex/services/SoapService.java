@@ -386,6 +386,46 @@ public class SoapService
 		}
 		
 	}
+	
+	public String getMyGroups(String name, int age) 
+	{
+		request = new SoapObject(NAMESPACE, "findUsersGrp");
+		request.addProperty("arg0", name);
+		request.addProperty("arg1", age);
+
+		envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+		envelope.dotNet = false;
+		envelope.setOutputSoapObject(request);
+
+		androidHttpTransport = new HttpTransportSE(URL);
+		androidHttpTransport.debug = true;
+
+		try {
+			androidHttpTransport.call(
+					"http://service/groupManagementWebService/findUsersGrp",
+					envelope);
+			Log.v(">>  ", androidHttpTransport.requestDump);
+			Log.v(">> ", androidHttpTransport.responseDump);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			e.printStackTrace();
+		}
+		Object results = null;
+		try {
+			results = (Object) envelope.getResponse();
+		} catch (SoapFault e) {
+			e.printStackTrace();
+		}
+		if(results == null) 
+			return null;
+		else
+			return results.toString();
+		
+	}
+	
+	
 
 	//add getUser location
 	

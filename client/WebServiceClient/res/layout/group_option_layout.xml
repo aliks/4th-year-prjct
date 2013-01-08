@@ -1,0 +1,49 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/popup_element"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#444444"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="Group Description"
+        android:textSize="17sp" />
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+<!--         <TextView -->
+<!--             android:id="@+id/group_details_txt" -->
+<!--             android:layout_width="wrap_content" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:text="" /> -->
+
+        <Button
+            android:id="@+id/cancel_b2"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/unsubscribe_b"
+            android:layout_width="192dp"
+            android:layout_height="wrap_content"
+            android:text="Unsubscribe" />
+
+        <Button
+            android:id="@+id/view_users_b"
+            android:layout_width="189dp"
+            android:layout_height="wrap_content"
+            android:text="Who is in the group?" />
+
+    </LinearLayout>
+
+</LinearLayout>

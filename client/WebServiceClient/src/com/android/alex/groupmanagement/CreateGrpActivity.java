@@ -32,8 +32,10 @@ public class CreateGrpActivity extends Activity
 			@Override
 			public void onClick(View v) {
 				String newgroup = ed.getText().toString();
-				new SoapService().createGroupServ(newgroup);
-				finish();
+				if(!newgroup.equals("")) {
+					new SoapService().createGroupServ(newgroup);
+					finish();
+				}
 			}
 		});
 	}

@@ -31,6 +31,10 @@ public class GroupsListAdapter
 		parse(responseString);
 	}
 	
+	public void subScribeUser(String name, int age, String groupName) {
+		new SoapService().putUserToGroup(name, age, groupName);
+	}
+	
 	private void parse(String str) {
 		responseList = str.replace("[", "").replace("]", "").split("\\,\\s");
 	}

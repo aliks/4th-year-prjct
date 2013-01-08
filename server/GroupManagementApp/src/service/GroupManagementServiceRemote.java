@@ -35,4 +35,6 @@ public interface GroupManagementServiceRemote {
 	public List<String> getUserLocation(String Username, String groupName);
 
 	public List<String> getUserage(String Username, String groupName);
+	
+	public List<String> findUsersGrp(String user, int age);
 }
