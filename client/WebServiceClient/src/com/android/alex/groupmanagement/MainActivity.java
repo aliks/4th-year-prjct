@@ -29,26 +29,31 @@ public class MainActivity extends ListActivity
     private Button subscribe; 
     private Button cancel;
     private TextView txt;
+    private Long userId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		Bundle b = getIntent().getExtras(); // Getting the Bundle object that pass from another activity
+		userId = b.getLong("userID");
 		setUpView();
 		
 		adapter = new GroupsListAdapter();
 		
 		//new SoapService().createGroupServ("home"); +
-		//new SoapService().regUser("NewUser", 20, 20.0, 20.0); -
+		//new SoapService().regUser("NewUser", 20, 20.0, 20.0); +
 		//new SoapService().getAllGroups(); +
-		//new SoapService().putUserToGroup("NewUser", 20, "home"); -
-		//new SoapService().removeUserFromGroup("NewUser", 20, "home"); -
+		//new SoapService().putUserToGroup("NewUser", 20, "home"); +
+		//new SoapService().removeUserFromGroup("NewUser", 20, "home"); +
 		//new SoapService().deleteGroup("home"); -
 		//new SoapService().findGroup("geeks"); +
 		//new SoapService().listAllUsers("geeks"); +
 		//new SoapService().finduser("Alex"); + 
 		//new SoapService().update(10.0, 10.0, "NewUser", 20); -
+		// get location +
+		// get age -
 	}
 	
 	@Override
@@ -60,7 +65,10 @@ public class MainActivity extends ListActivity
 	
 	private void setList(GroupsListAdapter myAdaper) {
 		String[] groupArr = myAdaper.getResponseList();
-		setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, groupArr));
+		setListAdapter(new ArrayAdapter<String>(this, 
+				android.R.layout.simple_list_item_1,
+				android.R.id.text1, 
+				groupArr));
 	}
 
 	private void setUpView() 
@@ -84,7 +92,11 @@ public class MainActivity extends ListActivity
 		viewMyGrp.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				startActivity(new Intent(MainActivity.this, MyGrpActivity.class));
+				Bundle dataBundle = new Bundle();
+				dataBundle.putLong("userID", userId);
+				Intent i = new Intent(MainActivity.this, MyGrpActivity.class);
+				i.putExtras(dataBundle);
+				startActivity(i);
 			} 
 		});
 	}
@@ -121,7 +133,7 @@ public class MainActivity extends ListActivity
 				@Override
 				public void onClick(View v) {
 					// PUT USERS NAME AND AGE HERE
-					adapter.subScribeUser("NewUser", 20, selectedGroupName);
+					adapter.subScribeUser(selectedGroupName, userId);
 					onResume();
 					pw.dismiss();
 				}

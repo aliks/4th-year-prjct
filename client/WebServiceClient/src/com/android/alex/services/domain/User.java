@@ -9,13 +9,18 @@ public class User implements KvmSerializable
 {
 
 	private String userName;
+	private String password;
 	private int userAge;
 	private double latitude;
 	private double longitude;
+	
+	public User() {
+	}
 
-	public User(String userName, int userAge, double latitude, double longitude) {
+	public User(String userName, String password, int userAge, double latitude, double longitude) {
 		super();
 		this.userName = userName;
+		this.password = password;
 		this.userAge = userAge;
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -27,6 +32,14 @@ public class User implements KvmSerializable
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public int getUserAge() {
@@ -65,10 +78,12 @@ public class User implements KvmSerializable
         case 0:
             return userName;
         case 1:
-            return userAge;
+            return password;    
         case 2:
-            return longitude;
+            return userAge;
         case 3:
+            return longitude;
+        case 4:
         	return latitude;
         }
         
@@ -78,7 +93,7 @@ public class User implements KvmSerializable
 	@Override
 	public int getPropertyCount() {
 		// TODO Auto-generated method stub
-		return 4;
+		return 5;
 	}
 
 	@Override
@@ -90,14 +105,18 @@ public class User implements KvmSerializable
             info.name = "userName";
             break;
         case 1:
+            info.type = PropertyInfo.STRING_CLASS;
+            info.name = "password";
+            break;    
+        case 2:
             info.type = PropertyInfo.INTEGER_CLASS;
             info.name = "userAge";
             break;
-        case 2:
+        case 3:
             info.type = Double.class;
             info.name = "longitude";
             break;
-        case 3:
+        case 4:
             info.type = Double.class;
             info.name = "latitude";
             break;  
@@ -113,12 +132,15 @@ public class User implements KvmSerializable
         	userName = value.toString();
             break;
         case 1:
+        	password = value.toString();
+            break;    
+        case 2:
         	userAge = Integer.parseInt(value.toString());
             break;
-        case 2:
+        case 3:
         	longitude = (Double) value;
             break;
-        case 3:
+        case 4:
         	latitude = (Double) value;
         	break;
         default:

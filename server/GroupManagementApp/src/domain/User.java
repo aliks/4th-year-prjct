@@ -10,12 +10,13 @@ import javax.persistence.Table;
 @Table(name="USERS")
 public class User implements Serializable
 {
-	private static final long serialVersionUID = -8636046618352460140L;
+	private static final long serialVersionUID = 4453873927203505335L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long userId;
 	private String userName;
 	private int userAge;
+	private String password;
 	private double latitude;
 	private double longitude;
 	
@@ -23,9 +24,10 @@ public class User implements Serializable
 		
 	}
 
-	public User(String userName, int userAge, double latitude, double longitude) {
+	public User(String userName, String password, int userAge, double latitude, double longitude) {
 		super();
 		this.userName = userName;
+		this.password = password;
 		this.userAge = userAge;
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -45,6 +47,14 @@ public class User implements Serializable
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public int getUserAge() {

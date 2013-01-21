@@ -12,11 +12,13 @@ public interface GroupManagementServiceRemote {
 	
 	public void registerUser(User newUser);
 	
+	public long verifyUser(String name, String password);
+	
 	public List<String> getAllUsers(String groupName);
 	
 	public List<String> searchUser(String name);
 	
-	public void updateLocation(Double latit, Double longt, String name, int age);
+	public void updateLocation(Double latit, Double longt, Long id);
 	
 	public void createGroup(String newGroup);
 	
@@ -26,9 +28,9 @@ public interface GroupManagementServiceRemote {
 	
 	public List<String> searchGroup(String groupName);
 	
-	public void subscribeToGroup(String name, int age, String groupName);
+	public void subscribeToGroup(String groupName, Long id);
 	
-	public void unsubscribeUserFromGroup(String name, int age, String groupName);
+	public void unsubscribeUserFromGroup(String groupName, Long id);
 	
 	public void updateGroup(Group group);
 
@@ -36,5 +38,5 @@ public interface GroupManagementServiceRemote {
 
 	public List<String> getUserage(String Username, String groupName);
 	
-	public List<String> findUsersGrp(String user, int age);
+	public List<String> findUsersGrp(Long id);
 }

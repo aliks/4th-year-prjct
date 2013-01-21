@@ -1,21 +1,21 @@
 package com.android.alex.groupmanagement;
 
-import com.android.alex.services.SoapService;
-
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.TextView;
+
+import com.android.alex.services.SoapService;
 
 public class MyGrpActivity extends ListActivity 
 {
@@ -26,19 +26,22 @@ public class MyGrpActivity extends ListActivity
     private PopupWindow pw;
 	private String[] searchResult = null;
 	private SoapService ss;
+	private long userId;
 	
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_grp_view);
 		ss = new SoapService();
+		Bundle b = getIntent().getExtras(); // Getting the Bundle object that pass from another activity
+		userId = b.getLong("userID");
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
 		// HERE PUT USERS NAME AND AGE
-		String responseString = ss.getMyGroups("NewUser", 20);
+		String responseString = ss.getMyGroups(userId);
 		parse(responseString);
 		setList(searchResult);
 	}
@@ -81,9 +84,20 @@ public class MyGrpActivity extends ListActivity
 	        unsubscribe.setOnClickListener(new OnClickListener() {
 	    	    public void onClick(View v) {
 	    	    	// 
-	    	    	ss.removeUserFromGroup("NewUser", 20, selectedGroupName);
+	    	    	ss.removeUserFromGroup(selectedGroupName, userId);
 	    	    	onResume();
 	    	        pw.dismiss();
+	    	    }
+	    	});
+	        viewUser.setOnClickListener(new OnClickListener() {
+	    	    public void onClick(View v) {
+	    	    	//
+	    	    	Bundle dataBundle = new Bundle();
+	    	    	dataBundle.putString("SelectedProperty", selectedGroupName);
+	    	    	Intent userDetails = new Intent(MyGrpActivity.this, UserOfGrpActivity.class);
+	    	    	userDetails.putExtras(dataBundle);
+	    	    	pw.dismiss();
+	    	    	startActivity(userDetails);
 	    	    }
 	    	});
 	 

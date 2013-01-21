@@ -1,6 +1,7 @@
 package com.android.alex.services;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 import org.ksoap2.SoapEnvelope;
@@ -15,16 +16,54 @@ import android.util.Log;
 import com.android.alex.services.domain.Group;
 import com.android.alex.services.domain.User;
 
-public class SoapService 
-{
+public class SoapService {
 	private static final String NAMESPACE = "http://service/";
-	private static final String URL = "http://10.0.2.2:8080/GroupsManagement/GroupManagementWebServiceService?wsdl";
+	private static final String URL = "http://10.0.2.2:8080/webapp/GroupManagementWebServiceService?wsdl";
 
 	private SoapObject request;
 	private SoapSerializationEnvelope envelope;
 	private HttpTransportSE androidHttpTransport;
 
 	private String result;
+
+	public void loginService(String username, String password) 
+	{
+		request = new SoapObject(NAMESPACE, "loginUser");
+
+		request.addProperty("username", username);
+		request.addProperty("password", password);
+		
+		envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+		envelope.dotNet = false;
+		envelope.setOutputSoapObject(request);
+		
+		androidHttpTransport = new HttpTransportSE(URL);
+		androidHttpTransport.debug = true;
+
+		androidHttpTransport = new HttpTransportSE(URL);
+		try {
+			androidHttpTransport.call(
+					"http://service/groupManagementWebService/loginUser",
+					envelope);
+			Log.v(">>  ", androidHttpTransport.requestDump);
+			Log.v(">> ", androidHttpTransport.responseDump);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			e.printStackTrace();
+		}
+		//Object results = null;
+		SoapPrimitive results = null;
+		// SoapObject results = null;
+		try {
+			//results = (Object) envelope.getResponse();
+			results = (SoapPrimitive) envelope.getResponse();
+			// results = (SoapObject)envelope.getResponse();
+		} catch (SoapFault e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void createGroupServ(String groupName) 
 	{
@@ -34,7 +73,7 @@ public class SoapService
 		envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
 		envelope.dotNet = false;
 		envelope.setOutputSoapObject(request);
-		//envelope.addMapping(NAMESPACE, "Group", new Group().getClass());
+		// envelope.addMapping(NAMESPACE, "Group", new Group().getClass());
 
 		androidHttpTransport = new HttpTransportSE(URL);
 		androidHttpTransport.debug = true;
@@ -63,8 +102,7 @@ public class SoapService
 		}
 	}
 
-	public String getAllGroups() 
-	{
+	public String getAllGroups() {
 		request = new SoapObject(NAMESPACE, "viewAllGroups");
 
 		envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
@@ -92,20 +130,22 @@ public class SoapService
 		} catch (SoapFault e) {
 			e.printStackTrace();
 		}
-		Log.v("list", results.toString());
-		return results.toString();
+		if (results == null)
+			return null;
+		else
+			return results.toString();
 	}
 
-	public void regUser(String userName, int userAge, double latitude,
+	public void regUser(String userName, String pass, int userAge, double latitude,
 			double longitude) {
 		request = new SoapObject(NAMESPACE, "registerUser");
-		User newUser = new User(userName, userAge, latitude, longitude);
+		User newUser = new User(userName, pass, userAge, latitude, longitude);
 		request.addProperty("arg0", newUser);
 
 		envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
 		envelope.dotNet = false;
 		envelope.setOutputSoapObject(request);
-		envelope.addMapping(NAMESPACE, "user", new Group().getClass());
+		//envelope.addMapping(NAMESPACE, "user", new User().getClass());
 
 		// serialize double values
 		MarshalDouble md = new MarshalDouble();
@@ -126,25 +166,24 @@ public class SoapService
 		} catch (XmlPullParserException e) {
 			e.printStackTrace();
 		}
+		/*
 		Object results = null;
 		// SoapPrimitive results = null;
-		// SoapObject results = null;
+		//SoapObject results = null;
 		try {
 			results = (Object) envelope.getResponse();
 			// results = (SoapPrimitive) envelope.getResponse();
-			// results = (SoapObject)envelope.getResponse();
+			//results = (SoapObject)envelope.getResponse();
 		} catch (SoapFault e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 
-	public void putUserToGroup(String name, int age, String groupName) 
-	{
+	public void putUserToGroup(String groupName, Long id) {
 		request = new SoapObject(NAMESPACE, "subscribeToGroup");
-		request.addProperty("arg0", name);
-		request.addProperty("arg1", age);
-		request.addProperty("arg2", groupName);
-		
+		request.addProperty("arg0", groupName);
+		request.addProperty("arg1", id);
+
 		envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
 		envelope.dotNet = false;
 		envelope.setOutputSoapObject(request);
@@ -172,13 +211,11 @@ public class SoapService
 		}
 	}
 
-	public void removeUserFromGroup(String name, int age, String groupName) 
-	{
+	public void removeUserFromGroup(String groupName, Long id) {
 		request = new SoapObject(NAMESPACE, "unsubscribeUserFromGroup");
-		request.addProperty("arg0", name);
-		request.addProperty("arg1", age);
-		request.addProperty("arg2", groupName);
-		
+		request.addProperty("arg0", groupName);
+		request.addProperty("arg1", id);
+
 		envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
 		envelope.dotNet = false;
 		envelope.setOutputSoapObject(request);
@@ -206,11 +243,10 @@ public class SoapService
 		}
 	}
 
-	public void deleteGroup(String group)
-	{
+	public void deleteGroup(String group) {
 		request = new SoapObject(NAMESPACE, "removeGroup");
 		request.addProperty("arg0", group);
-		
+
 		envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
 		envelope.dotNet = false;
 		envelope.setOutputSoapObject(request);
@@ -219,9 +255,9 @@ public class SoapService
 		androidHttpTransport.debug = true;
 
 		try {
-			androidHttpTransport
-					.call("http://service/groupManagementWebService/removeGroup",
-							envelope);
+			androidHttpTransport.call(
+					"http://service/groupManagementWebService/removeGroup",
+					envelope);
 			Log.v(">>  ", androidHttpTransport.requestDump);
 			Log.v(">> ", androidHttpTransport.responseDump);
 
@@ -238,8 +274,7 @@ public class SoapService
 		}
 	}
 
-	public String findGroup(String group)
-	{
+	public String findGroup(String group) {
 		request = new SoapObject(NAMESPACE, "searchGroup");
 		request.addProperty("arg0", group);
 
@@ -268,14 +303,13 @@ public class SoapService
 		} catch (SoapFault e) {
 			e.printStackTrace();
 		}
-		if(results == null) 
+		if (results == null)
 			return null;
 		else
 			return results.toString();
 	}
 
-	public String listAllUsers(String group)
-	{
+	public String listAllUsers(String group) {
 		request = new SoapObject(NAMESPACE, "getAllUsers");
 		request.addProperty("arg0", group);
 
@@ -304,15 +338,14 @@ public class SoapService
 		} catch (SoapFault e) {
 			e.printStackTrace();
 		}
-		if(results == null) 
+		if (results == null)
 			return null;
 		else
 			return results.toString();
 	}
 
 	// NOT SURE if should be used
-	public String finduser(String name)
-	{
+	public String finduser(String name) {
 		request = new SoapObject(NAMESPACE, "searchUser");
 		request.addProperty("arg0", name);
 
@@ -341,24 +374,22 @@ public class SoapService
 		} catch (SoapFault e) {
 			e.printStackTrace();
 		}
-		if(results == null) 
+		if (results == null)
 			return null;
 		else
 			return results.toString();
 	}
-	
-	public void update(double l, double lo, String name, int i) 
-	{
+
+	public void update(double l, double lo, Long id) {
 		request = new SoapObject(NAMESPACE, "updateLocation");
 		request.addProperty("arg0", l);
 		request.addProperty("arg1", lo);
-		request.addProperty("arg2", name);
-		request.addProperty("arg3", i);
+		request.addProperty("arg2", id);
 
 		envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
 		envelope.dotNet = false;
 		envelope.setOutputSoapObject(request);
-		
+
 		// serialize double values
 		MarshalDouble md = new MarshalDouble();
 		md.register(envelope);
@@ -384,14 +415,12 @@ public class SoapService
 		} catch (SoapFault e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	public String getMyGroups(String name, int age) 
-	{
+
+	public String getMyGroups(Long id) {
 		request = new SoapObject(NAMESPACE, "findUsersGrp");
-		request.addProperty("arg0", name);
-		request.addProperty("arg1", age);
+		request.addProperty("arg0", id);
 
 		envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
 		envelope.dotNet = false;
@@ -418,16 +447,81 @@ public class SoapService
 		} catch (SoapFault e) {
 			e.printStackTrace();
 		}
-		if(results == null) 
+		if (results == null)
 			return null;
 		else
 			return results.toString();
-		
 	}
-	
-	
 
-	//add getUser location
-	
-	//add getUser age
+	public String findUsersLocation(String name, String grpName) {
+		request = new SoapObject(NAMESPACE, "getUserLocation");
+		request.addProperty("arg0", name);
+		request.addProperty("arg1", grpName);
+
+		envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+		envelope.dotNet = false;
+		envelope.setOutputSoapObject(request);
+
+		androidHttpTransport = new HttpTransportSE(URL);
+		androidHttpTransport.debug = true;
+
+		try {
+			androidHttpTransport.call(
+					"http://service/groupManagementWebService/getUserLocation",
+					envelope);
+			Log.v(">>  ", androidHttpTransport.requestDump);
+			Log.v(">> ", androidHttpTransport.responseDump);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			e.printStackTrace();
+		}
+		Object results = null;
+		try {
+			results = (Object) envelope.getResponse();
+		} catch (SoapFault e) {
+			e.printStackTrace();
+		}
+		if (results != null)
+			return results.toString();
+		else
+			return result;
+	}
+
+	public Long verifyUser(String usr, String pass) {
+		request = new SoapObject(NAMESPACE, "verifyUser");
+		request.addProperty("arg0", usr);
+		request.addProperty("arg1", pass);
+
+		envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+		envelope.dotNet = false;
+		envelope.setOutputSoapObject(request);
+
+		androidHttpTransport = new HttpTransportSE(URL);
+		androidHttpTransport.debug = true;
+
+		try {
+			androidHttpTransport.call(
+					"http://service/groupManagementWebService/verifyUser",
+					envelope);
+			Log.v(">>  ", androidHttpTransport.requestDump);
+			Log.v(">> ", androidHttpTransport.responseDump);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			e.printStackTrace();
+		}
+		Object results = null;
+		try {
+			results = (Object) envelope.getResponse();
+		} catch (SoapFault e) {
+			e.printStackTrace();
+		}
+		Log.v("response >> ", results.toString());
+		return Long.parseLong(results.toString());
+	}
+
+	// add getUser age
 }

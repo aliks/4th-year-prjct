@@ -10,12 +10,13 @@ import com.android.alex.services.SoapService;
 public class GroupsListAdapter
 {
 	private String responseString = null;
-	private String[] responseList = null;
+	private String[] responseList = new String[]{};
 
 	public GroupsListAdapter() 
 	{
 		responseString = new SoapService().getAllGroups();
-		parse(responseString);
+		if (responseString != null)
+			parse(responseString);
 	}
 	
 	public String[] getResponseList() {
@@ -28,13 +29,18 @@ public class GroupsListAdapter
 
 	public void reload() {
 		responseString = new SoapService().getAllGroups();
-		parse(responseString);
+		if (responseString != null)
+			parse(responseString);
 	}
 	
-	public void subScribeUser(String name, int age, String groupName) {
-		new SoapService().putUserToGroup(name, age, groupName);
+	public void subScribeUser(String groupName, Long id) {
+		new SoapService().putUserToGroup(groupName, id);
 	}
-	
+/*
+	public String subScribeUser(String name, String groupName) {
+		return new SoapService().findUsersLocation(name, groupName);
+	}
+*/
 	private void parse(String str) {
 		responseList = str.replace("[", "").replace("]", "").split("\\,\\s");
 	}

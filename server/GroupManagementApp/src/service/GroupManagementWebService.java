@@ -20,6 +20,11 @@ public class GroupManagementWebService {
 	{	
 		groupManagementService.registerUser(newUser);
 	}
+	
+	public long verifyUser(String login, String pass) 
+	{	
+		return groupManagementService.verifyUser(login, pass);
+	}
 
 	public List<String> getAllUsers(String groupName) 
 	{
@@ -31,9 +36,9 @@ public class GroupManagementWebService {
 		return groupManagementService.searchUser(name);
 	}
 
-	public void updateLocation(Double latit, Double longt, String name, int age) 
+	public void updateLocation(Double latit, Double longt, Long id) 
 	{
-		groupManagementService.updateLocation(latit, longt, name, age);
+		groupManagementService.updateLocation(latit, longt, id);
 	}
 
 	public void createGroup(@WebParam(name = "groupname")String newGroup) 
@@ -56,14 +61,14 @@ public class GroupManagementWebService {
 		return groupManagementService.searchGroup(groupName);
 	}
 
-	public void subscribeToGroup(String name, int age, String groupName)
+	public void subscribeToGroup(String groupName, Long id)
 	{
-		groupManagementService.subscribeToGroup(name, age, groupName);
+		groupManagementService.subscribeToGroup(groupName, id);
 	}
 
-	public void unsubscribeUserFromGroup(String name, int age, String groupName)
+	public void unsubscribeUserFromGroup(String groupName, Long id)
 	{
-		groupManagementService.unsubscribeUserFromGroup(name, age, groupName);
+		groupManagementService.unsubscribeUserFromGroup(groupName, id);
 	}
 	
 	public List<String> getUserLocation(String Username, String groupName)
@@ -76,9 +81,9 @@ public class GroupManagementWebService {
 		return groupManagementService.getUserage(Username, groupName);
 	}
 	
-	public List<String> findUsersGrp(String user, int age) 
+	public List<String> findUsersGrp(Long id) 
 	{
-		return groupManagementService.findUsersGrp(user, age);
+		return groupManagementService.findUsersGrp(id);
 	}
 	
 	@WebMethod(exclude=true)
