@@ -34,7 +34,6 @@ public class UserOfGrpActivity extends ListActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.users_in_grp);
 		ss = new SoapService();
-		
 		Bundle b = getIntent().getExtras(); // Getting the Bundle object that pass from another activity
 		selectedProperty = b.getString("SelectedProperty");
 
@@ -58,10 +57,22 @@ public class UserOfGrpActivity extends ListActivity
 	{
 		String selectedUser = requestResult[position];
 		Bundle dataBundle = new Bundle();
-		dataBundle.putStringArray("SelectedProperty", new String[]{selectedProperty, selectedUser});
+		boolean rez = checkUserList(selectedUser, requestResult);
+		
+		dataBundle.putStringArray("SelectedProperty", 
+				new String[]{rez ? "Multiple" : "Single", selectedProperty, selectedUser});
 		Intent moreDetailsIntent = new Intent(UserOfGrpActivity.this, UserDetails.class);
 		moreDetailsIntent.putExtras(dataBundle);
 		startActivity(moreDetailsIntent);
+	}
+	
+	private boolean checkUserList(String user, String[] users) 
+	{
+		int appears = 0;
+		for (int i=0; i < users.length; i++)
+			if (users[i].equals(user))
+				appears++;
+		return (appears > 1) ? true : false;
 	}
 	
 	private void initiatePopupWindow(int position) 

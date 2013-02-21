@@ -9,7 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
-        android:apiKey="0rLWTQ9V6pLjYIn4qofoR4xYEolAJBrgT8_sJdA"
+        android:apiKey="0rLWTQ9V6pLhzOam5o3qaeliCiUddFuHZ8l8Now"
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
