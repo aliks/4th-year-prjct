@@ -15,14 +15,15 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
+import com.android.alex.groupmanagement.ui.NearestFriendActivity;
 import com.android.alex.services.SoapService;
 
 public class MyGrpActivity extends ListActivity 
 {
 	private Button unsubscribe;
 	private Button viewUser;
-	private Button viewGroup;
 	private Button cancel;
+	private Button nf; // nearest friend
     private PopupWindow pw;
 	private String[] searchResult = null;
 	private SoapService ss;
@@ -74,11 +75,25 @@ public class MyGrpActivity extends ListActivity
 			unsubscribe = (Button) layout.findViewById(R.id.unsubscribe_b);
 			viewUser = (Button) layout.findViewById(R.id.view_users_b);
 			cancel = (Button) layout.findViewById(R.id.cancel_b2);
+			nf = (Button) layout.findViewById(R.id.find_mate);
 			//viewGroup = (Button) layout.findViewById(R.id.view_grp_b);
 			final String selectedGroupName = searchResult[position];
 	        
 	        // set name of the selected group
 	        //txt.setText("Group name: " + searchResult[position]);
+			
+			nf.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//
+					Bundle dataBundle = new Bundle();
+					dataBundle.putString("SelectedProperty", selectedGroupName);
+					Intent nearFriendAct = new Intent(MyGrpActivity.this, NearestFriendActivity.class);
+					nearFriendAct.putExtras(dataBundle);
+					pw.dismiss();
+					startActivity(nearFriendAct);
+				}
+			});
 			
 	        cancel.setOnClickListener(cancel_button_click_listener);
 	        unsubscribe.setOnClickListener(new OnClickListener() {

@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import javax.jws.WebService;
 
 import dataaccess.GroupDataAccessImp;
+import domain.DemandSpace;
 import domain.Group;
 import domain.User;
 
@@ -189,6 +190,18 @@ public class GroupManagementServiceImp implements GroupManagementServiceRemote,
 
 	private User findUser(Long id) {
 		return dao.findByID(id);
+	}
+	
+	@Override
+	public Integer numberOfMembers(String groupName) {
+
+		return getAllUsers(groupName).size();
+	}
+
+	@Override
+	public List<String> findNN(String groupName, DemandSpace ds) {
+
+		return null;
 	}
 
 }

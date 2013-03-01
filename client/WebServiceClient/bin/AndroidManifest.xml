@@ -29,10 +29,10 @@
         <activity android:name="com.android.alex.groupmanagement.CreateGrpActivity" />
         <activity android:name="com.android.alex.groupmanagement.SearchActivity" />
         <activity android:name="com.android.alex.groupmanagement.MyGrpActivity" />
-        <activity android:name="com.android.alex.groupmanagement.GrpDetailsActivity" />
+        <activity android:name="com.android.alex.groupmanagement.ui.NearestFriendActivity" />
         <activity android:name="com.android.alex.groupmanagement.UserOfGrpActivity" />
         <activity
-            android:name="com.android.alex.groupmanagement.UserDetails"
+            android:name="com.android.alex.groupmanagement.ui.UserDetails"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity android:name="com.android.alex.groupmanagement.MainActivity" />
         <activity android:name="com.android.alex.groupmanagement.loginandregister.RegisterActivity" />

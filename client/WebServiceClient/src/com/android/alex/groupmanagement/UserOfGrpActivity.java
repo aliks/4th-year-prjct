@@ -1,5 +1,6 @@
 package com.android.alex.groupmanagement;
 
+import com.android.alex.groupmanagement.ui.UserDetails;
 import com.android.alex.services.SoapService;
 
 import android.app.ListActivity;
@@ -101,7 +102,6 @@ public class UserOfGrpActivity extends ListActivity
 	        cancel.setOnClickListener(cancel_button_click_listener);
 	        location.setOnClickListener(new OnClickListener() {
 	    	    public void onClick(View v) {
-	    	    	 
 	    	    	//onResume();
 	    	        pw.dismiss();
 	    	    }

@@ -66,7 +66,6 @@ public class Group implements KvmSerializable {
 
 	@Override
 	public int getPropertyCount() {
-		// TODO Auto-generated method stub
 		return 3;
 	}
 

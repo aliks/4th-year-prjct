@@ -119,6 +119,4 @@ public class GroupDataAccessImp {
 			return 0;
 		return results.get(0);
 	}
-
-
 }

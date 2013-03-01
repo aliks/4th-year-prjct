@@ -13,13 +13,14 @@ import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 import android.util.Log;
 
+import com.android.alex.services.domain.DemandSpace;
 import com.android.alex.services.domain.Group;
 import com.android.alex.services.domain.User;
 
 public class SoapService {
 	private static final String NAMESPACE = "http://service/";
+	//private static final String URL = "http://ec2-54-228-218-128.eu-west-1.compute.amazonaws.com:8080/webapp/GroupManagementWebServiceService?xsd=1";
 	private static final String URL = "http://10.0.2.2:8080/webapp/GroupManagementWebServiceService?wsdl";
-
 	private SoapObject request;
 	private SoapSerializationEnvelope envelope;
 	private HttpTransportSE androidHttpTransport;
@@ -521,6 +522,84 @@ public class SoapService {
 		}
 		Log.v("response >> ", results.toString());
 		return Long.parseLong(results.toString());
+	}
+
+	public String numberOfMembersInGroup(String groupName) {
+		request = new SoapObject(NAMESPACE, "numberOfMembers");
+		request.addProperty("arg0", groupName);
+
+		envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+		envelope.dotNet = false;
+		envelope.setOutputSoapObject(request);
+		
+		androidHttpTransport = new HttpTransportSE(URL);
+		androidHttpTransport.debug = true;
+
+		try {
+			androidHttpTransport.call(
+					"http://service/groupManagementWebService/numberOfMembers",
+					envelope);
+			Log.v(">>  ", androidHttpTransport.requestDump);
+			Log.v(">> ", androidHttpTransport.responseDump);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			e.printStackTrace();
+		}
+		Object results = null;
+		try {
+			results = (Object) envelope.getResponse();
+		} catch (SoapFault e) {
+			e.printStackTrace();
+		}
+		if (results != null)
+			return results.toString();
+		else
+			return result;
+	}
+	
+	public String findNearestFriend(String groupName, DemandSpace ds) {
+		request = new SoapObject(NAMESPACE, "findNN");
+		request.addProperty("arg0", groupName);
+		request.addProperty("arg1", ds);
+		//request.addProperty("arg2", ds.getY1());
+		//request.addProperty("arg3", ds.getX2());
+		//request.addProperty("arg4", ds.getY2());
+
+		envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+		envelope.dotNet = false;
+		envelope.setOutputSoapObject(request);
+
+		// serialize double values
+		MarshalDouble md = new MarshalDouble();
+		md.register(envelope);
+		
+		androidHttpTransport = new HttpTransportSE(URL);
+		androidHttpTransport.debug = true;
+
+		try {
+			androidHttpTransport.call(
+					"http://service/groupManagementWebService/findNN",
+					envelope);
+			Log.v(">>  ", androidHttpTransport.requestDump);
+			Log.v(">> ", androidHttpTransport.responseDump);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			e.printStackTrace();
+		}
+		Object results = null;
+		try {
+			results = (Object) envelope.getResponse();
+		} catch (SoapFault e) {
+			e.printStackTrace();
+		}
+		if (results != null)
+			return results.toString();
+		else
+			return result;
 	}
 
 	// add getUser age

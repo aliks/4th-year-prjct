@@ -20,11 +20,11 @@
         android:layout_height="fill_parent"
         android:orientation="vertical" >
 
-<!--         <TextView -->
-<!--             android:id="@+id/group_details_txt" -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:text="" /> -->
+        <!-- <TextView -->
+        <!-- android:id="@+id/group_details_txt" -->
+        <!-- android:layout_width="wrap_content" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:text="" /> -->
 
         <Button
             android:id="@+id/cancel_b2"
@@ -44,6 +44,11 @@
             android:layout_height="wrap_content"
             android:text="Who is in the group?" />
 
+        <Button
+            android:id="@+id/find_mate"
+            android:layout_width="189dp"
+            android:layout_height="wrap_content"
+            android:text="Who is close to you?" />
     </LinearLayout>
 
 </LinearLayout>

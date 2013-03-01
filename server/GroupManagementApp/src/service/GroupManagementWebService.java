@@ -7,6 +7,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import domain.DemandSpace;
 import domain.Group;
 import domain.User;
 
@@ -84,6 +85,16 @@ public class GroupManagementWebService {
 	public List<String> findUsersGrp(Long id) 
 	{
 		return groupManagementService.findUsersGrp(id);
+	}
+
+	public Integer numberOfMembers(String groupName)
+	{
+		return groupManagementService.numberOfMembers(groupName);
+	}
+	
+	public List<String> findNN(String groupName, DemandSpace ds)
+	{
+		return groupManagementService.findNN(groupName, ds);
 	}
 	
 	@WebMethod(exclude=true)

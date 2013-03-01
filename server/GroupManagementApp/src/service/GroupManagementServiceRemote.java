@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
+import domain.DemandSpace;
 import domain.Group;
 import domain.User;
 
@@ -39,4 +40,8 @@ public interface GroupManagementServiceRemote {
 	public List<String> getUserage(String Username, String groupName);
 	
 	public List<String> findUsersGrp(Long id);
+	
+	public Integer numberOfMembers(String groupName);
+	
+	public List<String> findNN(String groupName, DemandSpace ds);
 }
