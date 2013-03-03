@@ -10,6 +10,7 @@ import javax.jws.WebService;
 import dataaccess.GroupDataAccessImp;
 import domain.DemandSpace;
 import domain.Group;
+import domain.Haversine;
 import domain.User;
 
 @Stateless
@@ -200,8 +201,22 @@ public class GroupManagementServiceImp implements GroupManagementServiceRemote,
 
 	@Override
 	public List<String> findNN(String groupName, DemandSpace ds) {
-
-		return null;
+		List<User> userList = dao.viewUsersObjByGroup(groupName);
+		Haversine h = new Haversine(ds);
+		h.midpoint();
+		h.radiusBetween(); // radius in km
+		List<String> result = new ArrayList<String>();
+		// for each person in a group
+		for (User u : userList) {
+			// check if his current location is in ds
+			Double latitude = u.getLatitude();
+			Double longitude = u.getLongitude();
+			boolean rez = h.isInDemandSpace(latitude, longitude);
+			if (rez) {
+				result.add(Double.toString(latitude));
+				result.add(Double.toString(longitude));
+			}
+		}
+		return result;
 	}
-
 }

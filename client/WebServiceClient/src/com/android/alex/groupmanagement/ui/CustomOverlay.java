@@ -14,9 +14,9 @@ public class CustomOverlay extends Overlay {
 
 private GeoPoint point;
 private Paint paint1, paint2;
-private float radius; //in meters
+private double radius; //in meters
 
-public CustomOverlay(GeoPoint point, float radius) {
+public CustomOverlay(GeoPoint point, double radius) {
     this.point = point;
 
     paint1 = new Paint();
@@ -37,7 +37,7 @@ public CustomOverlay(GeoPoint point, float radius) {
 public void draw(Canvas canvas, MapView mapView, boolean shadow) {
 
     Point pt = mapView.getProjection().toPixels(point, null);
-    float projectedRadius = mapView.getProjection().metersToEquatorPixels(radius);
+    float projectedRadius = mapView.getProjection().metersToEquatorPixels((float) radius);
 
     canvas.drawCircle(pt.x, pt.y, projectedRadius, paint2);
     canvas.drawCircle(pt.x, pt.y, projectedRadius, paint1);

@@ -1,7 +1,5 @@
 package domain;
 
-
-
 public class DemandSpace {
 	// top right corner
 	private Double x1;

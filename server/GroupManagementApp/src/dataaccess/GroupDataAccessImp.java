@@ -29,7 +29,15 @@ public class GroupDataAccessImp {
 		List<User> list = q.getResultList();
 		return fetchUserNames(list);
 	}
-
+	// TESTED
+	// return users object who are in groupName group
+	public List<User> viewUsersObjByGroup(String groupName) {
+		Query q = em.createQuery("SELECT grp.users FROM Group grp "
+				+ "WHERE grp.groupName = :grName");
+		q.setParameter("grName", groupName);
+		List<User> list = q.getResultList();
+		return list;
+	}
 	// TESTED
 	// return list of strings
 	public List<String> findByUserName(String name) {

@@ -1,64 +1,166 @@
 package com.android.alex.groupmanagement.ui;
 
+import java.util.List;
+
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.android.alex.groupmanagement.R;
 import com.android.alex.services.SoapService;
 import com.android.alex.services.domain.DemandSpace;
+import com.android.alex.services.utilities.UtilityClass;
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
+import com.google.android.maps.OverlayItem;
 
 public class NearestFriendActivity extends MapActivity {
 
+	static Context context;
+	
 	private DemandSpace ds;
 	private SoapService ss;
 	private String selectedGroupName;
 	private String responseString;
+	// current location latitude
+	private Double current_latitude;
+	private Double current_longitude;
+	private Double[] closestFriend;
+	// ui variables
+	private MapView mapView;
+	private GeoPoint p;
+	private MapController mc;
+	private CustomOverlay[] overlay;
+	private Double x1;
+	private Double y1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.nearest_f_layout);
-		ss = new SoapService();
 		
+        // Get application context for later use
+        context = getApplicationContext();
+        
 		Bundle b = getIntent().getExtras();
-		selectedGroupName = b.getString("SelectedProperty");
-
 		// init variables
-		
+		selectedGroupName = b.getString("SelectedProperty");
+		ss = new SoapService();
+		closestFriend = new Double[4];
+		overlay = new CustomOverlay[2];
+		findMe();
 		// make request
 		responseString = findNN(selectedGroupName);
+		
+		if (responseString != null) {
+			analyzeLocations();
+		}
+		drawResult();
 	}
-	
-	// receive a string of the nearest neighbor locations
+	/*
+	 * draw map
+	 * put nearest friend and users location as pins
+	 */
+	private void drawResult() 
+	{
+		mapView = (MapView) findViewById(R.id.map);
+		mapView.setBuiltInZoomControls(true);
+
+		Drawable drawable = this.getResources().getDrawable(
+				R.drawable.marker);
+		GooglePin itemizedoverlay = new GooglePin(drawable, this);
+		List<Overlay> mapOverlays = mapView.getOverlays();
+		
+		// draw a blue circle showing user visibility region
+		p = new GeoPoint((int) (current_latitude * 1E6), (int) (current_longitude * 1E6));
+		overlay[0] = new CustomOverlay(p, UtilityClass.distance(current_latitude,current_longitude, x1, y1)*1000);
+		mapView.getOverlays().add(overlay[0]);
+		mc = mapView.getController();
+		mc.animateTo(p);
+		
+		/*
+		 *  add users current coordinates and draw a mark together with closest friend
+		 *  if no friends found, draw current users location  
+		 */
+		if (responseString != null) {
+			closestFriend[2] = current_latitude;
+			closestFriend[3] = current_longitude;
+		} else {
+			closestFriend[0] = current_latitude;
+			closestFriend[1] = current_longitude;
+		}
+		for (int x = 0, y = 1; y < closestFriend.length; x += 2, y += 2) {
+			if (closestFriend[x] == null)
+				continue;
+			double lat = closestFriend[x];
+			double lng = closestFriend[y];
+			p = new GeoPoint((int) (lat * 1E6), (int) (lng * 1E6));
+
+			mapView.getController().setCenter(p);
+			OverlayItem overlayitem = new OverlayItem(p, "Details", "FRIEND's LOCATION");
+			if (x == 2 || responseString == null)
+				overlayitem = new OverlayItem(p, "Dtails", "MY LOCATION");
+			itemizedoverlay.addOverlay(overlayitem);
+			mapOverlays.add(itemizedoverlay);
+			// new map pin
+			drawable = this.getResources().getDrawable(R.drawable.marker2);
+			itemizedoverlay = new GooglePin(drawable, this);
+		}
+
+		//mc.setZoom(20);
+		mapView.invalidate();
+	}
+	// find current location
+	private void findMe() {
+		current_latitude = 52.614167;
+		current_longitude = -2.197266;
+	}
+	// receive a string of the nearest neighbor's location
 	private String findNN(String selectedGroupName) {
-		// find user location
-		Double latid = 55.875259;
-		Double longt = -4.291577;
 		// get number of members in a group
 		int numberOfMembers = Integer.parseInt(ss.numberOfMembersInGroup(selectedGroupName));
-		Log.v("Number of member in a group: ", String.valueOf(numberOfMembers));
 		// create a demand space
-		Double x1 = latid + (1/(numberOfMembers*100));
-		Double y1 = longt + (1/(numberOfMembers*100));
+		x1 = current_latitude + (1.0/(numberOfMembers*10));
+		y1 = current_longitude + (1.0/(numberOfMembers*10));
 		
-		Double x2 = latid - (1/(numberOfMembers*100));
-		Double y2 = longt - (1/(numberOfMembers*100));
+		Double x2 = current_latitude - (1.0/(numberOfMembers*10));
+		Double y2 = current_longitude - (1.0/(numberOfMembers*10));
+		
+//		Log.v("point x1 >",String.valueOf(x1));
+//		Log.v("point x1 >",String.valueOf(y1));
+//		Log.v("point x1 >",String.valueOf(x2));
+//		Log.v("point x1 >",String.valueOf(y2));
 		ds = new DemandSpace(x1,y1, x2,y2);
 		// send demand space
-		//ss.findNearestFriend(selectedGroupName, ds);
-		return null;
+		String rez = ss.findNearestFriend(selectedGroupName, ds);
+		return rez;
 	}
 	
 	// analyzes locations received from the server (LBS) 
 	// returns closest neighbor location
-	private Double[] analyzeLocations() {
-		return null;
+	private void analyzeLocations() {
+		Double d = null;
+		Double shortestDistance = Double.MAX_VALUE;
+		String[] rez = UtilityClass.parseString(responseString);
+		for (int i = 0; i < rez.length; i += 2) {
+			// calculate distance between current user and friend
+			d = UtilityClass.distance(Double.valueOf(rez[i]),
+					Double.valueOf(rez[i + 1]), current_latitude,
+					current_longitude);
+			if (d < shortestDistance) {
+				shortestDistance = d;
+				closestFriend[0] = Double.valueOf(rez[i]);
+				closestFriend[1] = Double.valueOf(rez[i + 1]);
+			}
+		}
 	}
-
+	
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
 	}
-
 }
