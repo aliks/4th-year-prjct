@@ -2,6 +2,7 @@ package com.android.alex.groupmanagement;
 
 import com.android.alex.groupmanagement.ui.UserDetails;
 import com.android.alex.services.SoapService;
+import com.android.alex.services.utilities.UtilityClass;
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -23,7 +24,6 @@ public class UserOfGrpActivity extends ListActivity
 	private SoapService ss;
 	private PopupWindow pw;
 	private Button location;
-	private Button details;
 	private Button cancel;
 	private String responseString;
 	private String selectedProperty;
@@ -91,7 +91,6 @@ public class UserOfGrpActivity extends ListActivity
 	        pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
 	 
 			location = (Button) layout.findViewById(R.id.unsubscribe_b);
-			details = (Button) layout.findViewById(R.id.view_users_b);
 			cancel = (Button) layout.findViewById(R.id.cancel_b2);
 			//viewGroup = (Button) layout.findViewById(R.id.view_grp_b);
 			//final String selectedGroupName = searchResult[position];
@@ -118,7 +117,7 @@ public class UserOfGrpActivity extends ListActivity
 	};
 	private void parse(String str) {
 		if(str != null)
-			requestResult = str.replace("[", "").replace("]", "").split("\\,\\s");
+			requestResult = UtilityClass.parseString(str);
 	}
 	
 }

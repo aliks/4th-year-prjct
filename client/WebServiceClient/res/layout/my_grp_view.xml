@@ -13,33 +13,21 @@
         android:textSize="8pt" >
     </TextView>
 
-<!--     <Button -->
-<!--         android:id="@+id/unsubscribe_b" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="wrap_content" -->
-<!--         android:layout_alignParentBottom="true" -->
-<!--         android:text="Unsubscribe" /> -->
-
-<!--     <Button -->
-<!--         android:id="@+id/view_user_b" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="wrap_content" -->
-<!--         android:layout_above="@id/unsubscribe_b" -->
-<!--         android:text="View user" /> -->
-
-<!--     <Button -->
-<!--         android:id="@+id/view_grp_b" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="wrap_content" -->
-<!--         android:layout_above="@id/view_user_b" -->
-<!--         android:text="View Group" /> -->
+    <Button
+        android:id="@+id/update_location_b"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Update Location" />
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/update_location_b"
         android:layout_below="@id/MyGrpViewTitle"
-        android:layout_alignParentBottom="true">
+        android:layout_weight="1"
+        android:drawSelectorOnTop="false" >
     </ListView>
 
 </RelativeLayout>

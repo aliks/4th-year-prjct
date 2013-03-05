@@ -19,8 +19,8 @@ import com.android.alex.services.domain.User;
 
 public class SoapService {
 	private static final String NAMESPACE = "http://service/";
-	//private static final String URL = "http://ec2-54-228-218-128.eu-west-1.compute.amazonaws.com:8080/webapp/GroupManagementWebServiceService?xsd=1";
-	private static final String URL = "http://10.0.2.2:8080/webapp/GroupManagementWebServiceService?wsdl";
+	private static final String URL = "http://ec2-54-228-218-128.eu-west-1.compute.amazonaws.com:8080/webapp/GroupManagementWebServiceService?wsdl";
+	//private static final String URL = "http://10.0.2.2:8080/webapp/GroupManagementWebServiceService?wsdl";
 	private SoapObject request;
 	private SoapSerializationEnvelope envelope;
 	private HttpTransportSE androidHttpTransport;
@@ -46,8 +46,8 @@ public class SoapService {
 			androidHttpTransport.call(
 					"http://service/groupManagementWebService/loginUser",
 					envelope);
-			Log.v(">>  ", androidHttpTransport.requestDump);
-			Log.v(">> ", androidHttpTransport.responseDump);
+//			Log.v(">>  ", androidHttpTransport.requestDump);
+//			Log.v(">> ", androidHttpTransport.responseDump);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -83,8 +83,8 @@ public class SoapService {
 			androidHttpTransport.call(
 					"http://service/groupManagementWebService/createGroup",
 					envelope);
-			Log.v(">>  ", androidHttpTransport.requestDump);
-			Log.v(">> ", androidHttpTransport.responseDump);
+//			Log.v(">>  ", androidHttpTransport.requestDump);
+//			Log.v(">> ", androidHttpTransport.responseDump);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -117,8 +117,8 @@ public class SoapService {
 			androidHttpTransport.call(
 					"http://service/groupManagementWebService/viewAllGroups",
 					envelope);
-			Log.v(">>  ", androidHttpTransport.requestDump);
-			Log.v(">> ", androidHttpTransport.responseDump);
+//			Log.v(">>  ", androidHttpTransport.requestDump);
+//			Log.v(">> ", androidHttpTransport.responseDump);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -159,8 +159,8 @@ public class SoapService {
 			androidHttpTransport.call(
 					"http://service/groupManagementWebService/registerUser",
 					envelope);
-			Log.v(">>  ", androidHttpTransport.requestDump);
-			Log.v(">> ", androidHttpTransport.responseDump);
+//			Log.v(">>  ", androidHttpTransport.requestDump);
+//			Log.v(">> ", androidHttpTransport.responseDump);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -196,8 +196,8 @@ public class SoapService {
 			androidHttpTransport
 					.call("http://service/groupManagementWebService/subscribeToGroup",
 							envelope);
-			Log.v(">>  ", androidHttpTransport.requestDump);
-			Log.v(">> ", androidHttpTransport.responseDump);
+//			Log.v(">>  ", androidHttpTransport.requestDump);
+//			Log.v(">> ", androidHttpTransport.responseDump);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -228,8 +228,8 @@ public class SoapService {
 			androidHttpTransport
 					.call("http://service/groupManagementWebService/unsubscribeUserFromGroup",
 							envelope);
-			Log.v(">>  ", androidHttpTransport.requestDump);
-			Log.v(">> ", androidHttpTransport.responseDump);
+//			Log.v(">>  ", androidHttpTransport.requestDump);
+//			Log.v(">> ", androidHttpTransport.responseDump);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -259,8 +259,8 @@ public class SoapService {
 			androidHttpTransport.call(
 					"http://service/groupManagementWebService/removeGroup",
 					envelope);
-			Log.v(">>  ", androidHttpTransport.requestDump);
-			Log.v(">> ", androidHttpTransport.responseDump);
+//			Log.v(">>  ", androidHttpTransport.requestDump);
+//			Log.v(">> ", androidHttpTransport.responseDump);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -290,8 +290,8 @@ public class SoapService {
 			androidHttpTransport.call(
 					"http://service/groupManagementWebService/searchGroup",
 					envelope);
-			Log.v(">>  ", androidHttpTransport.requestDump);
-			Log.v(">> ", androidHttpTransport.responseDump);
+//			Log.v(">>  ", androidHttpTransport.requestDump);
+//			Log.v(">> ", androidHttpTransport.responseDump);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -325,8 +325,8 @@ public class SoapService {
 			androidHttpTransport.call(
 					"http://service/groupManagementWebService/getAllUsers",
 					envelope);
-			Log.v(">>  ", androidHttpTransport.requestDump);
-			Log.v(">> ", androidHttpTransport.responseDump);
+//			Log.v(">>  ", androidHttpTransport.requestDump);
+//			Log.v(">> ", androidHttpTransport.responseDump);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -361,8 +361,8 @@ public class SoapService {
 			androidHttpTransport.call(
 					"http://service/groupManagementWebService/searchUser",
 					envelope);
-			Log.v(">>  ", androidHttpTransport.requestDump);
-			Log.v(">> ", androidHttpTransport.responseDump);
+//			Log.v(">>  ", androidHttpTransport.requestDump);
+//			Log.v(">> ", androidHttpTransport.responseDump);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -402,8 +402,8 @@ public class SoapService {
 			androidHttpTransport.call(
 					"http://service/groupManagementWebService/updateLocation",
 					envelope);
-			Log.v(">>  ", androidHttpTransport.requestDump);
-			Log.v(">> ", androidHttpTransport.responseDump);
+//			Log.v(">>  ", androidHttpTransport.requestDump);
+//			Log.v(">> ", androidHttpTransport.responseDump);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -434,8 +434,8 @@ public class SoapService {
 			androidHttpTransport.call(
 					"http://service/groupManagementWebService/findUsersGrp",
 					envelope);
-			Log.v(">>  ", androidHttpTransport.requestDump);
-			Log.v(">> ", androidHttpTransport.responseDump);
+//			Log.v(">>  ", androidHttpTransport.requestDump);
+//			Log.v(">> ", androidHttpTransport.responseDump);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -470,8 +470,8 @@ public class SoapService {
 			androidHttpTransport.call(
 					"http://service/groupManagementWebService/getUserLocation",
 					envelope);
-			Log.v(">>  ", androidHttpTransport.requestDump);
-			Log.v(">> ", androidHttpTransport.responseDump);
+//			Log.v(">>  ", androidHttpTransport.requestDump);
+//			Log.v(">> ", androidHttpTransport.responseDump);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -506,8 +506,8 @@ public class SoapService {
 			androidHttpTransport.call(
 					"http://service/groupManagementWebService/verifyUser",
 					envelope);
-			Log.v(">>  ", androidHttpTransport.requestDump);
-			Log.v(">> ", androidHttpTransport.responseDump);
+//			Log.v(">>  ", androidHttpTransport.requestDump);
+//			Log.v(">> ", androidHttpTransport.responseDump);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -539,8 +539,8 @@ public class SoapService {
 			androidHttpTransport.call(
 					"http://service/groupManagementWebService/numberOfMembers",
 					envelope);
-			Log.v(">>  ", androidHttpTransport.requestDump);
-			Log.v(">> ", androidHttpTransport.responseDump);
+//			Log.v(">>  ", androidHttpTransport.requestDump);
+//			Log.v(">> ", androidHttpTransport.responseDump);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -556,7 +556,7 @@ public class SoapService {
 		if (results != null)
 			return results.toString();
 		else
-			return result;
+			return "0";
 	}
 	
 	public String findNearestFriend(String groupName, DemandSpace ds) {
@@ -582,8 +582,8 @@ public class SoapService {
 			androidHttpTransport.call(
 					"http://service/groupManagementWebService/findNN",
 					envelope);
-			Log.v(">>  ", androidHttpTransport.requestDump);
-			Log.v(">> ", androidHttpTransport.responseDump);
+//			Log.v(">>  ", androidHttpTransport.requestDump);
+//			Log.v(">> ", androidHttpTransport.responseDump);
 
 		} catch (IOException e) {
 			e.printStackTrace();

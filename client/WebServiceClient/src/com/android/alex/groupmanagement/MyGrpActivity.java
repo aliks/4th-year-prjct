@@ -1,8 +1,12 @@
 package com.android.alex.groupmanagement;
 
+import java.util.List;
+
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -14,9 +18,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.android.alex.groupmanagement.ui.NearestFriendActivity;
 import com.android.alex.services.SoapService;
+import com.android.alex.services.utilities.UtilityClass;
 
 public class MyGrpActivity extends ListActivity 
 {
@@ -24,10 +30,16 @@ public class MyGrpActivity extends ListActivity
 	private Button viewUser;
 	private Button cancel;
 	private Button nf; // nearest friend
+	private Button update_location; // update location
     private PopupWindow pw;
 	private String[] searchResult = null;
 	private SoapService ss;
 	private long userId;
+	// GPS variables
+	private Double[] gps;
+	private LocationManager lm = null;
+	private List<String> providers = null;
+	private Location l = null;
 	
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -36,6 +48,9 @@ public class MyGrpActivity extends ListActivity
 		ss = new SoapService();
 		Bundle b = getIntent().getExtras(); // Getting the Bundle object that pass from another activity
 		userId = b.getLong("userID");
+		
+		update_location = (Button) findViewById(R.id.update_location_b);
+		update_location.setOnClickListener(location_listener);
 	}
 	
 	@Override
@@ -125,9 +140,42 @@ public class MyGrpActivity extends ListActivity
 	        pw.dismiss();
 	    }
 	};
+	private OnClickListener location_listener = new OnClickListener() {		
+		@Override
+		public void onClick(View v) {
+			Double[] current_location = getLocation();
+			if (current_location[0] != null) {
+				ss.update(current_location[0], current_location[1], userId);
+				Toast.makeText(MyGrpActivity.this,"Location updated!", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(MyGrpActivity.this,"Something went wrong, can't update location", 
+						Toast.LENGTH_SHORT).show();
+			}
+		}
+	};
+	
+	private Double[] getLocation() {
+		gps = new Double[2];
+		lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		providers = lm.getProviders(true);
+		/*
+		 * Loop over the array backwards, and if you get an accurate location,
+		 * then break out the loop
+		 */
+		for (int i = providers.size() - 1; i >= 0; i--) {
+			l = lm.getLastKnownLocation(providers.get(i));
+			if (l != null)
+				break;
+		}
+		if (l != null) {
+			gps[0] = l.getLatitude();
+			gps[1] = l.getLongitude();
+		}
+		return gps;
+	}
 	
 	private void parse(String str) {
 		if(str != null)
-			searchResult = str.replace("[", "").replace("]", "").split("\\,\\s");
+			searchResult = UtilityClass.parseString(str);
 	}
 }

@@ -23,6 +23,7 @@ import com.android.alex.groupmanagement.R.drawable;
 import com.android.alex.groupmanagement.R.id;
 import com.android.alex.groupmanagement.R.layout;
 import com.android.alex.services.SoapService;
+import com.android.alex.services.utilities.UtilityClass;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -69,7 +70,7 @@ public class UserDetails extends MapActivity {
 											// pass from another activity
 		// [Single/Multiple, GroupName, UserName]
 		selectedProperty = b.getStringArray("SelectedProperty");
-		Log.v(">>> ", Arrays.toString(selectedProperty));
+		//Log.v(">>> ", Arrays.toString(selectedProperty));
 
 		responseString = ss.findUsersLocation(selectedProperty[2],
 				selectedProperty[1]);
@@ -82,8 +83,9 @@ public class UserDetails extends MapActivity {
 			// if there are many persons with the same name
 		} else if (selectedProperty[0].equals("Multiple")) {
 			// pairs of latitude and longitude
-			String[] parseString = responseString.replace("[", "").replace("]", "")
-					.split("\\,\\s");
+			String[] parseString = UtilityClass.parseString(responseString);
+//			String[] parseString = responseString.replace("[", "").replace("]", "")
+//					.split("\\,\\s");
 			
 			overlay = new CustomOverlay[parseString.length];
 			
@@ -96,7 +98,7 @@ public class UserDetails extends MapActivity {
 			Log.v("List of common >>", Arrays.toString(listOfCommon));
 		}
 
-		Log.v("LOCATION >>> ", responseString);
+		//Log.v("LOCATION >>> ", responseString);
 
 		mapView = (MapView) findViewById(R.id.map);
 		mapView.setBuiltInZoomControls(true);
@@ -139,8 +141,9 @@ public class UserDetails extends MapActivity {
 				OverlayItem overlayitem = new OverlayItem(p, "User", "Location");
 				itemizedoverlay.addOverlay(overlayitem);
 				mapOverlays.add(itemizedoverlay);
+				mc = mapView.getController();
 			}
-
+			
 			mc.setZoom(20);
 			mapView.invalidate();
 			
@@ -200,7 +203,7 @@ public class UserDetails extends MapActivity {
 	private void getCurrentHour() {
 		SimpleDateFormat df = new SimpleDateFormat("HH");
 		Date date = new Date();
-		currentHour = 3;// Integer.parseInt(df.format(date));
+		currentHour = Integer.parseInt(df.format(date));
 	}
 
 	private void initMap() {

@@ -4,9 +4,13 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.alex.groupmanagement.MyGrpActivity;
 import com.android.alex.groupmanagement.R;
 import com.android.alex.services.SoapService;
 import com.android.alex.services.domain.DemandSpace;
@@ -37,6 +41,11 @@ public class NearestFriendActivity extends MapActivity {
 	private CustomOverlay[] overlay;
 	private Double x1;
 	private Double y1;
+	// GPS variables
+	private Double[] gps;
+	private LocationManager lm = null;
+	private List<String> providers = null;
+	private Location l = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -116,8 +125,18 @@ public class NearestFriendActivity extends MapActivity {
 	}
 	// find current location
 	private void findMe() {
-		current_latitude = 52.614167;
-		current_longitude = -2.197266;
+		Double[] current_location = getLocation();
+		if (current_location[0] != null) {
+			current_latitude = current_location[0];
+			current_longitude = current_location[1];
+			Toast.makeText(NearestFriendActivity.this,"Location retrieved successfully", 
+					Toast.LENGTH_SHORT).show();
+		} else {
+			Toast.makeText(NearestFriendActivity.this,"Something went wrong, can't get location", 
+					Toast.LENGTH_SHORT).show();
+			current_latitude = 55.8738;
+			current_longitude = -4.292178;
+		}
 	}
 	// receive a string of the nearest neighbor's location
 	private String findNN(String selectedGroupName) {
@@ -157,6 +176,26 @@ public class NearestFriendActivity extends MapActivity {
 				closestFriend[1] = Double.valueOf(rez[i + 1]);
 			}
 		}
+	}
+	
+	private Double[] getLocation() {
+		gps = new Double[2];
+		lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		providers = lm.getProviders(true);
+		/*
+		 * Loop over the array backwards, and if you get an accurate location,
+		 * then break out the loop
+		 */
+		for (int i = providers.size() - 1; i >= 0; i--) {
+			l = lm.getLastKnownLocation(providers.get(i));
+			if (l != null)
+				break;
+		}
+		if (l != null) {
+			gps[0] = l.getLatitude();
+			gps[1] = l.getLongitude();
+		}
+		return gps;
 	}
 	
 	@Override
